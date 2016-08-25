@@ -98,6 +98,36 @@ describe('useragent', function () {
       JSON.stringify(agent).should.equal('{"family":"Chrome","major":"15","minor":"0","patch":"874","device":{"family":"Other","major":"0","minor":"0","patch":"0"},"os":{"family":"Mac OS X","major":"10","minor":"7","patch":"1"}}');
     });
 
+    it('should correctly parse edge user agent', function () {
+      var agent = useragent.parse('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586');
+
+      agent.family.should.equal('Edge');
+      agent.major.should.equal('13');
+      agent.minor.should.equal('10586');
+      agent.patch.should.equal('0');
+
+      agent.os.toString().should.equal('Windows 10 0.0.0');
+      agent.toVersion().should.equal('13.10586.0');
+      agent.toString().should.equal('Edge 13.10586.0 / Windows 10 0.0.0');
+      agent.toAgent().should.equal('Edge 13.10586.0');
+      JSON.stringify(agent).should.equal('{"family":"Edge","major":"13","minor":"10586","patch":"0","device":{"family":"Other","major":"0","minor":"0","patch":"0"},"os":{"family":"Windows 10","major":"0","minor":"0","patch":"0"}}');
+    });
+
+    it('should correctly parse SAMSUNG user agent', function () {
+      var agent = useragent.parse('Mozilla/5.0 (Linux; Android 4.4.2; en-gb; SAMSUNG SM-T230 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Version/1.5 Chrome/28.0.1500.94 Safari/537.36');
+
+      agent.family.should.equal('Chrome');
+      agent.major.should.equal('28');
+      agent.minor.should.equal('0');
+      agent.patch.should.equal('1500');
+
+      agent.os.toString().should.equal('Android 4.4.2');
+      agent.toVersion().should.equal('28.0.1500');
+      agent.toString().should.equal('Chrome 28.0.1500 / Android 4.4.2');
+      agent.toAgent().should.equal('Chrome 28.0.1500');
+      JSON.stringify(agent).should.equal('{"family":"Chrome","major":"28","minor":"0","patch":"1500","device":{"family":"Samsung SM-T230","major":"SM-T230","minor":"0","patch":"0"},"os":{"family":"Android","major":"4","minor":"4","patch":"2"}}');
+    });
+
     it('correctly parses iOS8', function () {
       var agent = useragent.parse('Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A365 Safari/600.1.4');
 
