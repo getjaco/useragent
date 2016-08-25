@@ -109,7 +109,14 @@ Object.defineProperty(Agent.prototype, 'device', {
       if (res = parsers[i][0].exec(userAgent)) {
         parser = parsers[i];
 
-        if (parser[1]) res[1] = parser[1].replace('$1', res[1]);
+        var major = res[2] || '';
+        var minor = res[3] || '';
+        var patch = res[4] || '';
+        if (parser[1]) res[1] = parser[1]
+          .replace('$1', res[1])
+          .replace('$2', major)
+          .replace('$3', minor)
+          .replace('$4', patch);
         break;
       }
     }
