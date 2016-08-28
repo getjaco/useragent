@@ -99,7 +99,7 @@ Object.defineProperty(Agent.prototype, 'os', {
 Object.defineProperty(Agent.prototype, 'device', {
   get: function lazyparse() {
     var userAgent = this.source
-      , length = deviceparserslength
+      , length = deviceparsers.length
       , parsers = deviceparsers
       , i = 0
       , parser
@@ -108,15 +108,17 @@ Object.defineProperty(Agent.prototype, 'device', {
     for (; i < length; i++) {
       if (res = parsers[i][0].exec(userAgent)) {
         parser = parsers[i];
-
+        var device = res[1] || '';
         var major = res[2] || '';
         var minor = res[3] || '';
         var patch = res[4] || '';
-        if (parser[1]) res[1] = parser[1]
-          .replace('$1', res[1])
+        if (parser[1]) {
+        res[1] = parser[1]
+          .replace('$1', device)
           .replace('$2', major)
           .replace('$3', minor)
           .replace('$4', patch);
+        }
         break;
       }
     }
@@ -424,7 +426,7 @@ exports.Agent = Agent;
 exports.parse = function parse(userAgent, jsAgent) {
   if (!userAgent) return new Agent();
 
-  var length = agentparserslength
+  var length = agentparsers.length
     , parsers = agentparsers
     , i = 0
     , parser
